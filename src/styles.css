@@ -1,0 +1,284 @@
+@import "tailwindcss" source(none);
+@source "../src";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+/*
+ * Brick — design system
+ * Warm cream surface · brick/terracotta accent · serif headings.
+ * Inspiration: builder's blueprint, handcrafted journal, slow architecture.
+ * All colors in oklch.
+ */
+
+@theme inline {
+  --font-sans: 'Manrope', ui-sans-serif, system-ui, sans-serif;
+  --font-heading: 'Manrope', ui-sans-serif, system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, monospace;
+
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-success: var(--success);
+  --color-success-foreground: var(--success-foreground);
+  --color-warning: var(--warning);
+  --color-warning-foreground: var(--warning-foreground);
+  --color-surface: var(--surface);
+  --color-brick: var(--brick);
+  --color-brick-soft: var(--brick-soft);
+  --color-clay: var(--clay);
+  --color-sand: var(--sand);
+  --color-ink: var(--ink);
+
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+
+  --radius-sm: calc(var(--radius) * 0.5);
+  --radius-md: calc(var(--radius) * 0.75);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.5);
+  --radius-2xl: calc(var(--radius) * 2);
+  --radius-3xl: calc(var(--radius) * 2.5);
+  --radius-4xl: calc(var(--radius) * 3);
+}
+
+:root {
+  color-scheme: light;
+
+  /* Warm cream paper */
+  --background: oklch(0.955 0.018 78);
+  --foreground: oklch(0.255 0.025 50);
+
+  --card: oklch(0.985 0.012 82);
+  --card-foreground: oklch(0.255 0.025 50);
+
+  --popover: oklch(0.985 0.012 82);
+  --popover-foreground: oklch(0.255 0.025 50);
+
+  /* Warm brick / terracotta */
+  --primary: oklch(0.52 0.13 38);
+  --primary-foreground: oklch(0.985 0.012 82);
+
+  --secondary: oklch(0.91 0.022 75);
+  --secondary-foreground: oklch(0.35 0.05 45);
+
+  --muted: oklch(0.92 0.018 75);
+  --muted-foreground: oklch(0.5 0.025 55);
+
+  --accent: oklch(0.62 0.11 45);
+  --accent-foreground: oklch(0.985 0.012 82);
+
+  --success: oklch(0.55 0.09 145);
+  --success-foreground: oklch(0.985 0.012 82);
+  --warning: oklch(0.72 0.13 70);
+  --warning-foreground: oklch(0.25 0.05 50);
+
+  --surface: oklch(0.97 0.015 80);
+
+  --destructive: oklch(0.55 0.18 28);
+  --destructive-foreground: oklch(0.985 0.012 82);
+
+  --border: oklch(0.87 0.022 75);
+  --input: oklch(0.87 0.022 75);
+  --ring: oklch(0.52 0.13 38);
+
+  --radius: 1.25rem;
+
+  /* Builder palette */
+  --brick: oklch(0.52 0.13 38);
+  --brick-soft: oklch(0.78 0.08 45);
+  --clay: oklch(0.65 0.1 50);
+  --sand: oklch(0.91 0.04 80);
+  --ink: oklch(0.3 0.03 45);
+
+  --chart-1: oklch(0.52 0.13 38);
+  --chart-2: oklch(0.65 0.1 50);
+  --chart-3: oklch(0.42 0.08 145);
+  --chart-4: oklch(0.78 0.08 45);
+  --chart-5: oklch(0.6 0.09 70);
+
+  --sidebar: oklch(0.985 0.012 82);
+  --sidebar-foreground: oklch(0.255 0.025 50);
+  --sidebar-primary: oklch(0.52 0.13 38);
+  --sidebar-primary-foreground: oklch(0.985 0.012 82);
+  --sidebar-accent: oklch(0.92 0.018 75);
+  --sidebar-accent-foreground: oklch(0.35 0.05 45);
+  --sidebar-border: oklch(0.87 0.022 75);
+  --sidebar-ring: oklch(0.52 0.13 38);
+}
+
+/* Dark mode — fireside, warm-charcoal, deep clay */
+.dark {
+  color-scheme: dark;
+
+  --background: oklch(0.195 0.012 50);
+  --foreground: oklch(0.94 0.018 78);
+
+  --card: oklch(0.235 0.013 50);
+  --card-foreground: oklch(0.94 0.018 78);
+
+  --popover: oklch(0.235 0.013 50);
+  --popover-foreground: oklch(0.94 0.018 78);
+
+  --primary: oklch(0.68 0.13 40);
+  --primary-foreground: oklch(0.18 0.02 45);
+
+  --secondary: oklch(0.28 0.015 55);
+  --secondary-foreground: oklch(0.94 0.018 78);
+
+  --muted: oklch(0.28 0.015 55);
+  --muted-foreground: oklch(0.72 0.02 75);
+
+  --accent: oklch(0.72 0.11 50);
+  --accent-foreground: oklch(0.18 0.02 45);
+
+  --success: oklch(0.7 0.1 145);
+  --success-foreground: oklch(0.18 0.02 45);
+  --warning: oklch(0.78 0.13 70);
+  --warning-foreground: oklch(0.2 0.05 50);
+
+  --surface: oklch(0.22 0.013 50);
+
+  --destructive: oklch(0.65 0.2 28);
+  --destructive-foreground: oklch(0.985 0.012 82);
+
+  --border: oklch(0.32 0.015 55);
+  --input: oklch(0.32 0.015 55);
+  --ring: oklch(0.68 0.13 40);
+
+  --brick: oklch(0.68 0.13 40);
+  --brick-soft: oklch(0.4 0.08 45);
+  --clay: oklch(0.55 0.09 50);
+  --sand: oklch(0.32 0.025 70);
+  --ink: oklch(0.92 0.02 78);
+
+  --sidebar: oklch(0.22 0.013 50);
+  --sidebar-foreground: oklch(0.94 0.018 78);
+  --sidebar-primary: oklch(0.68 0.13 40);
+  --sidebar-primary-foreground: oklch(0.18 0.02 45);
+  --sidebar-accent: oklch(0.28 0.015 55);
+  --sidebar-accent-foreground: oklch(0.94 0.018 78);
+  --sidebar-border: oklch(0.32 0.015 55);
+  --sidebar-ring: oklch(0.68 0.13 40);
+}
+
+html, body, [data-themed] {
+  transition: background-color 300ms ease, color 300ms ease, border-color 300ms ease;
+}
+
+@layer base {
+  * {
+    border-color: var(--color-border);
+    outline-color: color-mix(in oklab, var(--color-ring) 50%, transparent);
+  }
+  html {
+    font-family: var(--font-sans);
+  }
+  body {
+    background-color: var(--color-background);
+    color: var(--color-foreground);
+    -webkit-tap-highlight-color: transparent;
+    -webkit-font-smoothing: antialiased;
+    letter-spacing: -0.01em;
+    overscroll-behavior: none;
+    /* Subtle paper grain */
+    background-image:
+      radial-gradient(circle at 20% 20%, color-mix(in oklab, var(--color-primary) 4%, transparent) 0, transparent 40%),
+      radial-gradient(circle at 80% 80%, color-mix(in oklab, var(--color-clay) 5%, transparent) 0, transparent 45%);
+    background-attachment: fixed;
+  }
+  h1, h2, h3, h4 {
+    font-family: var(--font-heading);
+    letter-spacing: -0.028em;
+    font-weight: 800;
+  }
+}
+
+@layer utilities {
+  .font-heading { font-family: var(--font-heading); }
+  .font-serif { font-family: var(--font-heading); }
+  .safe-pb { padding-bottom: env(safe-area-inset-bottom, 0px); }
+
+  /* Architectural blueprint grid — subtle, warm */
+  .bg-blueprint {
+    background-image:
+      linear-gradient(to right, color-mix(in oklab, var(--color-primary) 7%, transparent) 1px, transparent 1px),
+      linear-gradient(to bottom, color-mix(in oklab, var(--color-primary) 7%, transparent) 1px, transparent 1px);
+    background-size: 22px 22px;
+  }
+  .bg-paper {
+    background-color: var(--color-card);
+    background-image: radial-gradient(color-mix(in oklab, var(--color-foreground) 3%, transparent) 1px, transparent 1px);
+    background-size: 14px 14px;
+    background-position: 0 0;
+  }
+  /* Warm hand-built shadow */
+  .shadow-warm   { box-shadow: 0 2px 6px -2px color-mix(in oklab, var(--color-primary) 18%, transparent), 0 12px 28px -16px color-mix(in oklab, var(--color-ink) 30%, transparent); }
+  .shadow-hearth { box-shadow: 0 10px 30px -12px color-mix(in oklab, var(--color-primary) 35%, transparent); }
+  .ring-warm     { box-shadow: 0 0 0 1px color-mix(in oklab, var(--color-primary) 18%, transparent); }
+}
+
+/* ─── Brick: calm micro-interactions ─────────────────────────────────────── */
+
+@keyframes brick-place {
+  0%   { transform: translateY(-14px) rotate(-2deg) scale(0.92); opacity: 0; }
+  55%  { transform: translateY(2px)   rotate(0.5deg) scale(1.03); opacity: 1; }
+  100% { transform: translateY(0)     rotate(0)     scale(1);    opacity: 1; }
+}
+@keyframes house-grow {
+  0%   { transform: scale(0.96); opacity: 0.6; }
+  100% { transform: scale(1);    opacity: 1; }
+}
+@keyframes session-complete {
+  0%   { transform: scale(0.9); opacity: 0; }
+  50%  { transform: scale(1.05); opacity: 1; }
+  100% { transform: scale(1); opacity: 1; }
+}
+@keyframes mentor-fade {
+  0%   { opacity: 0; transform: translateY(4px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+@keyframes dust-rise {
+  0%   { opacity: 0; transform: translateY(2px) scale(0.6); }
+  40%  { opacity: 0.8; }
+  100% { opacity: 0; transform: translateY(-10px) scale(1.4); }
+}
+@keyframes ember-flicker {
+  0%, 100% { opacity: 0.8; }
+  50%      { opacity: 1; }
+}
+
+.animate-brick-place      { animation: brick-place 700ms cubic-bezier(0.2, 0.8, 0.2, 1) both; }
+.animate-house-grow       { animation: house-grow 700ms ease-out both; }
+.animate-session-complete { animation: session-complete 500ms cubic-bezier(0.2, 0.8, 0.2, 1) both; }
+.animate-mentor-fade      { animation: mentor-fade 500ms ease-out both; }
+.animate-dust             { animation: dust-rise 1.4s ease-out infinite; }
+.animate-ember            { animation: ember-flicker 2.4s ease-in-out infinite; }

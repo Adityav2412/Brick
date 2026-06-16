@@ -16,5 +16,5 @@ directory = ".output/public"
 
 [vars]
 # Set these via `wrangler secret put` or in the Cloudflare dashboard:
-# SUPABASE_URL = "https://qagmtttepdufqjoebtgf.supabase.co"
+# SUPABASE_URL = "https://qgkyrdjysjplmrmsdeki.supabase.co"
 # SUPABASE_SERVICE_ROLE_KEY = "..."

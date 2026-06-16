@@ -20,8 +20,11 @@ export const cloudBackupSave = createServerFn({ method: 'POST' })
     }).parse,
   )
   .handler(async ({ data }) => {
+    console.log('[SERVER] cloudBackupSave handler entered')
+    console.log('[SERVER] code:', data.code?.slice(0, 8) + '...')
     const { supabaseAdmin } = await import('@/integrations/supabase/client.server')
     const updatedAt = new Date().toISOString()
+    console.log('[SERVER] calling supabaseAdmin.from(backups).upsert()')
     const { error } = await supabaseAdmin.from('backups').upsert(
       {
         code: data.code.toUpperCase(),
@@ -30,7 +33,11 @@ export const cloudBackupSave = createServerFn({ method: 'POST' })
       },
       { onConflict: 'code' },
     )
-    if (error) throw new Error(error.message)
+    if (error) {
+      console.error('[SERVER] Supabase upsert error:', error.message, error.code, error.hint)
+      throw new Error(error.message)
+    }
+    console.log('[SERVER] cloudBackupSave success, updatedAt:', updatedAt)
     return { ok: true as const, updatedAt }
   })
 

@@ -1,18 +1,15 @@
-# Cloudflare Workers deployment configuration for Brick PWA.
+# Cloudflare Pages deployment configuration for Brick PWA.
 #
-# Build:   NITRO_PRESET=cloudflare-module npm run build
-# Deploy:  npx wrangler deploy
+# Build:   NITRO_PRESET=cloudflare-pages npm run build
+# Deploy:  npx wrangler pages deploy dist
 #
-# The Nitro build generates .output/server/wrangler.json automatically,
-# but this top-level file is needed for `wrangler deploy` to find the project.
+# Nitro's cloudflare-pages preset produces a single `dist/` directory
+# containing both static assets and `_worker.js/` (the SSR function).
 
 name = "brick-pwa"
 compatibility_date = "2026-06-16"
 compatibility_flags = ["nodejs_compat"]
-main = ".output/server/index.mjs"
-
-[assets]
-directory = ".output/public"
+pages_build_output_dir = "dist"
 
 [vars]
 # Set these via `wrangler secret put` or in the Cloudflare dashboard:

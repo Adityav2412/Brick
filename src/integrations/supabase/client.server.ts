@@ -9,6 +9,11 @@ function createSupabaseAdminClient() {
   const SUPABASE_URL = process.env.SUPABASE_URL;
   const SUPABASE_SERVICE_ROLE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY;
 
+  // Temporary diagnostic — remove once "Invalid API key" is resolved.
+  console.log('[Supabase:Admin] SUPABASE_URL prefix:', SUPABASE_URL?.slice(0, 35) ?? 'UNDEFINED');
+  console.log('[Supabase:Admin] SUPABASE_SERVICE_ROLE_KEY prefix:', SUPABASE_SERVICE_ROLE_KEY?.slice(0, 20) ?? 'UNDEFINED');
+  console.log('[Supabase:Admin] SUPABASE_SERVICE_ROLE_KEY length:', SUPABASE_SERVICE_ROLE_KEY?.length ?? 0);
+
   if (!SUPABASE_URL || !SUPABASE_SERVICE_ROLE_KEY) {
     const missing = [
       ...(!SUPABASE_URL ? ['SUPABASE_URL'] : []),

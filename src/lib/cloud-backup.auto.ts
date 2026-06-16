@@ -17,6 +17,10 @@
 
 import { cloudBackupSave } from './cloud-backup.functions'
 
+// Temporary diagnostic: proves this module is loaded in the production bundle.
+// Remove once auto-backup is confirmed working.
+console.log('[Brick] AUTO BACKUP MODULE LOADED')
+
 const STORAGE_KEY = 'brick_v1'
 const CLOUD_CODE_KEY = 'brick_cloud_code_v1'
 const DEBOUNCE_MS = 60_000
@@ -34,12 +38,12 @@ export function scheduleCloudBackup(): void {
   // Quick exit: no cloud code → user hasn't opted in → nothing to do.
   const code = safeGetItem(CLOUD_CODE_KEY)
   if (!code || code.length < 8) {
-    console.debug('[Brick:AutoBackup] No cloud code found, skipping.')
+    console.log('[Brick:AutoBackup] No cloud code found, skipping.')
     return
   }
 
   dirty = true
-  console.debug('[Brick:AutoBackup] scheduleCloudBackup() called. Dirty flag set.')
+  console.log('[Brick:AutoBackup] scheduleCloudBackup() called. Dirty flag set.')
 
   // Clear any pending timer — only the last call within the window matters.
   if (timerId !== null) {
@@ -49,7 +53,7 @@ export function scheduleCloudBackup(): void {
 
   timerId = setTimeout(() => {
     timerId = null
-    console.debug('[Brick:AutoBackup] 60s timer fired. Triggering backup.')
+    console.log('[Brick:AutoBackup] 60s timer fired. Triggering backup.')
     void flushBackup()
   }, DEBOUNCE_MS)
 
@@ -59,7 +63,7 @@ export function scheduleCloudBackup(): void {
     listenerAttached = true
     document.addEventListener('visibilitychange', () => {
       if (document.visibilityState === 'hidden' && dirty) {
-        console.debug('[Brick:AutoBackup] App hidden with dirty state. Flushing immediately.')
+        console.log('[Brick:AutoBackup] App hidden with dirty state. Flushing immediately.')
         // Cancel the pending timer — we're flushing now.
         if (timerId !== null) {
           clearTimeout(timerId)
@@ -80,20 +84,20 @@ async function flushBackup(): Promise<void> {
   try {
     const code = safeGetItem(CLOUD_CODE_KEY)
     if (!code || code.length < 8) {
-      console.debug('[Brick:AutoBackup] performBackup: no code at flush time.')
+      console.log('[Brick:AutoBackup] performBackup: no code at flush time.')
       return
     }
 
     const raw = safeGetItem(STORAGE_KEY)
     if (!raw) {
-      console.debug('[Brick:AutoBackup] performBackup: no localStorage data.')
+      console.log('[Brick:AutoBackup] performBackup: no localStorage data.')
       return
     }
 
     const data: unknown = JSON.parse(raw)
-    console.debug('[Brick:AutoBackup] Calling cloudBackupSave...')
+    console.log('[Brick:AutoBackup] Calling cloudBackupSave...')
     await cloudBackupSave({ data: { code, data } })
-    console.debug('[Brick:AutoBackup] cloudBackupSave succeeded.')
+    console.log('[Brick:AutoBackup] cloudBackupSave succeeded.')
   } catch (e) {
     // Auto-backup failures must never surface to the user.
     console.warn('[Brick:AutoBackup] cloudBackupSave FAILED (silent):', e)

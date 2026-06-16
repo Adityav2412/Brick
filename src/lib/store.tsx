@@ -772,7 +772,8 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
           }
         : null
       const toStore: AppState = { ...state, activeSession: frozenSession }
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(toStore))  scheduleCloudBackup()
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(toStore))
+      scheduleCloudBackup()
     } catch (e) {
       console.error('[Brick] Persist error:', e)
     }

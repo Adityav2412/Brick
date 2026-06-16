@@ -27,6 +27,8 @@ export function scheduleCloudBackup() {
           data,
         },
       })
+
+      console.log('[Brick] Auto backup completed')
     } catch (error) {
       console.error('[Brick] Auto backup failed:', error)
     }

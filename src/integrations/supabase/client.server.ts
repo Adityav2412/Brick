@@ -13,6 +13,10 @@ function createSupabaseAdminClient() {
   console.log('[Supabase:Admin] SUPABASE_URL prefix:', SUPABASE_URL?.slice(0, 35) ?? 'UNDEFINED');
   console.log('[Supabase:Admin] SUPABASE_SERVICE_ROLE_KEY prefix:', SUPABASE_SERVICE_ROLE_KEY?.slice(0, 20) ?? 'UNDEFINED');
   console.log('[Supabase:Admin] SUPABASE_SERVICE_ROLE_KEY length:', SUPABASE_SERVICE_ROLE_KEY?.length ?? 0);
+  console.log('[Supabase:Admin] SUPABASE_SERVICE_ROLE_KEY first12:', SUPABASE_SERVICE_ROLE_KEY?.slice(0, 12) ?? 'UNDEFINED');
+  console.log('[Supabase:Admin] SUPABASE_SERVICE_ROLE_KEY last12:', SUPABASE_SERVICE_ROLE_KEY?.slice(-12) ?? 'UNDEFINED');
+  console.log('[Supabase:Admin] SUPABASE_SERVICE_ROLE_KEY hasNewline:', JSON.stringify(SUPABASE_SERVICE_ROLE_KEY?.includes('\n')));
+  console.log('[Supabase:Admin] SUPABASE_SERVICE_ROLE_KEY hasSpace:', JSON.stringify(SUPABASE_SERVICE_ROLE_KEY?.includes(' ')));
 
   if (!SUPABASE_URL || !SUPABASE_SERVICE_ROLE_KEY) {
     const missing = [

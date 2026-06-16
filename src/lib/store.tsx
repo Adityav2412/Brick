@@ -29,7 +29,6 @@ import {
   SUBJECT_ICONS,
 } from './algorithm'
 import { startReminderScheduler, stopReminderScheduler } from './reminders'
-import { scheduleCloudBackup } from './cloud-backup.auto'
 
 // ─── State ────────────────────────────────────────────────────────────────────
 
@@ -773,7 +772,6 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
         : null
       const toStore: AppState = { ...state, activeSession: frozenSession }
       localStorage.setItem(STORAGE_KEY, JSON.stringify(toStore))
-      scheduleCloudBackup()
     } catch (e) {
       console.error('[Brick] Persist error:', e)
     }

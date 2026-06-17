@@ -23,6 +23,4 @@ export default defineConfig({
     // nitro/vite builds from this
     server: { entry: "server" },
   },
-  // @ts-expect-error Disable Lovable component tagger
-  componentTagger: false,
 });

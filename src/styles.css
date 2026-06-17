@@ -12,9 +12,9 @@
  */
 
 @theme inline {
-  --font-sans: 'Manrope', ui-sans-serif, system-ui, sans-serif;
-  --font-heading: 'Manrope', ui-sans-serif, system-ui, sans-serif;
-  --font-mono: 'JetBrains Mono', ui-monospace, monospace;
+  --font-sans: "Manrope", ui-sans-serif, system-ui, sans-serif;
+  --font-heading: "Manrope", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
 
   --color-background: var(--background);
   --color-foreground: var(--foreground);
@@ -190,8 +190,13 @@
   --sidebar-ring: oklch(0.68 0.13 40);
 }
 
-html, body, [data-themed] {
-  transition: background-color 300ms ease, color 300ms ease, border-color 300ms ease;
+html,
+body,
+[data-themed] {
+  transition:
+    background-color 300ms ease,
+    color 300ms ease,
+    border-color 300ms ease;
 }
 
 @layer base {
@@ -211,11 +216,22 @@ html, body, [data-themed] {
     overscroll-behavior: none;
     /* Subtle paper grain */
     background-image:
-      radial-gradient(circle at 20% 20%, color-mix(in oklab, var(--color-primary) 4%, transparent) 0, transparent 40%),
-      radial-gradient(circle at 80% 80%, color-mix(in oklab, var(--color-clay) 5%, transparent) 0, transparent 45%);
+      radial-gradient(
+        circle at 20% 20%,
+        color-mix(in oklab, var(--color-primary) 4%, transparent) 0,
+        transparent 40%
+      ),
+      radial-gradient(
+        circle at 80% 80%,
+        color-mix(in oklab, var(--color-clay) 5%, transparent) 0,
+        transparent 45%
+      );
     background-attachment: fixed;
   }
-  h1, h2, h3, h4 {
+  h1,
+  h2,
+  h3,
+  h4 {
     font-family: var(--font-heading);
     letter-spacing: -0.028em;
     font-weight: 800;
@@ -223,62 +239,142 @@ html, body, [data-themed] {
 }
 
 @layer utilities {
-  .font-heading { font-family: var(--font-heading); }
-  .font-serif { font-family: var(--font-heading); }
-  .safe-pb { padding-bottom: env(safe-area-inset-bottom, 0px); }
+  .font-heading {
+    font-family: var(--font-heading);
+  }
+  .font-serif {
+    font-family: var(--font-heading);
+  }
+  .safe-pb {
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
 
   /* Architectural blueprint grid — subtle, warm */
   .bg-blueprint {
     background-image:
-      linear-gradient(to right, color-mix(in oklab, var(--color-primary) 7%, transparent) 1px, transparent 1px),
-      linear-gradient(to bottom, color-mix(in oklab, var(--color-primary) 7%, transparent) 1px, transparent 1px);
+      linear-gradient(
+        to right,
+        color-mix(in oklab, var(--color-primary) 7%, transparent) 1px,
+        transparent 1px
+      ),
+      linear-gradient(
+        to bottom,
+        color-mix(in oklab, var(--color-primary) 7%, transparent) 1px,
+        transparent 1px
+      );
     background-size: 22px 22px;
   }
   .bg-paper {
     background-color: var(--color-card);
-    background-image: radial-gradient(color-mix(in oklab, var(--color-foreground) 3%, transparent) 1px, transparent 1px);
+    background-image: radial-gradient(
+      color-mix(in oklab, var(--color-foreground) 3%, transparent) 1px,
+      transparent 1px
+    );
     background-size: 14px 14px;
     background-position: 0 0;
   }
   /* Warm hand-built shadow */
-  .shadow-warm   { box-shadow: 0 2px 6px -2px color-mix(in oklab, var(--color-primary) 18%, transparent), 0 12px 28px -16px color-mix(in oklab, var(--color-ink) 30%, transparent); }
-  .shadow-hearth { box-shadow: 0 10px 30px -12px color-mix(in oklab, var(--color-primary) 35%, transparent); }
-  .ring-warm     { box-shadow: 0 0 0 1px color-mix(in oklab, var(--color-primary) 18%, transparent); }
+  .shadow-warm {
+    box-shadow:
+      0 2px 6px -2px color-mix(in oklab, var(--color-primary) 18%, transparent),
+      0 12px 28px -16px color-mix(in oklab, var(--color-ink) 30%, transparent);
+  }
+  .shadow-hearth {
+    box-shadow: 0 10px 30px -12px color-mix(in oklab, var(--color-primary) 35%, transparent);
+  }
+  .ring-warm {
+    box-shadow: 0 0 0 1px color-mix(in oklab, var(--color-primary) 18%, transparent);
+  }
 }
 
 /* ─── Brick: calm micro-interactions ─────────────────────────────────────── */
 
 @keyframes brick-place {
-  0%   { transform: translateY(-14px) rotate(-2deg) scale(0.92); opacity: 0; }
-  55%  { transform: translateY(2px)   rotate(0.5deg) scale(1.03); opacity: 1; }
-  100% { transform: translateY(0)     rotate(0)     scale(1);    opacity: 1; }
+  0% {
+    transform: translateY(-14px) rotate(-2deg) scale(0.92);
+    opacity: 0;
+  }
+  55% {
+    transform: translateY(2px) rotate(0.5deg) scale(1.03);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(0) rotate(0) scale(1);
+    opacity: 1;
+  }
 }
 @keyframes house-grow {
-  0%   { transform: scale(0.96); opacity: 0.6; }
-  100% { transform: scale(1);    opacity: 1; }
+  0% {
+    transform: scale(0.96);
+    opacity: 0.6;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
 }
 @keyframes session-complete {
-  0%   { transform: scale(0.9); opacity: 0; }
-  50%  { transform: scale(1.05); opacity: 1; }
-  100% { transform: scale(1); opacity: 1; }
+  0% {
+    transform: scale(0.9);
+    opacity: 0;
+  }
+  50% {
+    transform: scale(1.05);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
 }
 @keyframes mentor-fade {
-  0%   { opacity: 0; transform: translateY(4px); }
-  100% { opacity: 1; transform: translateY(0); }
+  0% {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 @keyframes dust-rise {
-  0%   { opacity: 0; transform: translateY(2px) scale(0.6); }
-  40%  { opacity: 0.8; }
-  100% { opacity: 0; transform: translateY(-10px) scale(1.4); }
+  0% {
+    opacity: 0;
+    transform: translateY(2px) scale(0.6);
+  }
+  40% {
+    opacity: 0.8;
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-10px) scale(1.4);
+  }
 }
 @keyframes ember-flicker {
-  0%, 100% { opacity: 0.8; }
-  50%      { opacity: 1; }
+  0%,
+  100% {
+    opacity: 0.8;
+  }
+  50% {
+    opacity: 1;
+  }
 }
 
-.animate-brick-place      { animation: brick-place 700ms cubic-bezier(0.2, 0.8, 0.2, 1) both; }
-.animate-house-grow       { animation: house-grow 700ms ease-out both; }
-.animate-session-complete { animation: session-complete 500ms cubic-bezier(0.2, 0.8, 0.2, 1) both; }
-.animate-mentor-fade      { animation: mentor-fade 500ms ease-out both; }
-.animate-dust             { animation: dust-rise 1.4s ease-out infinite; }
-.animate-ember            { animation: ember-flicker 2.4s ease-in-out infinite; }
+.animate-brick-place {
+  animation: brick-place 700ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+.animate-house-grow {
+  animation: house-grow 700ms ease-out both;
+}
+.animate-session-complete {
+  animation: session-complete 500ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+.animate-mentor-fade {
+  animation: mentor-fade 500ms ease-out both;
+}
+.animate-dust {
+  animation: dust-rise 1.4s ease-out infinite;
+}
+.animate-ember {
+  animation: ember-flicker 2.4s ease-in-out infinite;
+}

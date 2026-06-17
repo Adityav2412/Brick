@@ -1,5 +1,5 @@
-import { createServerFn } from '@tanstack/react-start'
-import { z } from 'zod'
+import { createServerFn } from "@tanstack/react-start";
+import { z } from "zod";
 
 // Cloud backup: optional, code-gated, no auth.
 // The user generates a random code locally; we store the blob keyed by that
@@ -10,9 +10,9 @@ const codeSchema = z
   .string()
   .min(8)
   .max(64)
-  .regex(/^[A-Z0-9-]+$/i, 'Backup code must be letters, digits, or dashes.')
+  .regex(/^[A-Z0-9-]+$/i, "Backup code must be letters, digits, or dashes.");
 
-export const cloudBackupSave = createServerFn({ method: 'POST' })
+export const cloudBackupSave = createServerFn({ method: "POST" })
   .inputValidator(
     z.object({
       code: codeSchema,
@@ -20,30 +20,30 @@ export const cloudBackupSave = createServerFn({ method: 'POST' })
     }).parse,
   )
   .handler(async ({ data }) => {
-    const { supabaseAdmin } = await import('@/integrations/supabase/client.server')
-    const updatedAt = new Date().toISOString()
-    const { error } = await supabaseAdmin.from('backups').upsert(
+    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+    const updatedAt = new Date().toISOString();
+    const { error } = await supabaseAdmin.from("backups").upsert(
       {
         code: data.code.toUpperCase(),
         data: data.data as never,
         updated_at: updatedAt,
       },
-      { onConflict: 'code' },
-    )
-    if (error) throw new Error(error.message)
-    return { ok: true as const, updatedAt }
-  })
+      { onConflict: "code" },
+    );
+    if (error) throw new Error(error.message);
+    return { ok: true as const, updatedAt };
+  });
 
-export const cloudBackupLoad = createServerFn({ method: 'POST' })
+export const cloudBackupLoad = createServerFn({ method: "POST" })
   .inputValidator(z.object({ code: codeSchema }).parse)
   .handler(async ({ data }) => {
-    const { supabaseAdmin } = await import('@/integrations/supabase/client.server')
+    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
     const { data: row, error } = await supabaseAdmin
-      .from('backups')
-      .select('data, updated_at')
-      .eq('code', data.code.toUpperCase())
-      .maybeSingle()
-    if (error) throw new Error(error.message)
-    if (!row) return { ok: false as const, reason: 'not_found' as const }
-    return { ok: true as const, data: row.data, updatedAt: row.updated_at }
-  })
+      .from("backups")
+      .select("data, updated_at")
+      .eq("code", data.code.toUpperCase())
+      .maybeSingle();
+    if (error) throw new Error(error.message);
+    if (!row) return { ok: false as const, reason: "not_found" as const };
+    return { ok: true as const, data: row.data, updatedAt: row.updated_at };
+  });

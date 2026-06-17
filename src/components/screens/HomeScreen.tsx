@@ -1,7 +1,7 @@
-'use client'
+"use client";
 
-import { Bell, Play, ChevronRight, Home as HomeIcon, BookOpen } from 'lucide-react'
-import { useStore } from '@/lib/store'
+import { Bell, Play, ChevronRight, Home as HomeIcon, BookOpen } from "lucide-react";
+import { useStore } from "@/lib/store";
 import {
   getGreeting,
   getMentorMessage,
@@ -11,24 +11,24 @@ import {
   formatMinutes,
   daysAway,
   adjustCapacityForEnergy,
-} from '@/lib/algorithm'
-import SubjectIcon from '@/components/SubjectIcon'
-import CompanionAvatar from '@/components/CompanionAvatar'
-import HouseScene from '@/components/HouseScene'
-import type { EnergyLevel } from '@/lib/types'
+} from "@/lib/algorithm";
+import SubjectIcon from "@/components/SubjectIcon";
+import CompanionAvatar from "@/components/CompanionAvatar";
+import HouseScene from "@/components/HouseScene";
+import type { EnergyLevel } from "@/lib/types";
 
 // ─── Main Screen ──────────────────────────────────────────────────────────────
 
 export default function HomeScreen() {
-  const { state, dispatch } = useStore()
-  const { user, subjects, todaySchedule } = state
+  const { state, dispatch } = useStore();
+  const { user, subjects, todaySchedule } = state;
 
-  if (!user) return null
+  if (!user) return null;
 
-  const greeting = getGreeting()
-  const today = new Date().toISOString().split('T')[0]
-  const energySetToday = user.energyDate === today
-  const todayEnergy: EnergyLevel | null = energySetToday ? (user.todayEnergy ?? null) : null
+  const greeting = getGreeting();
+  const today = new Date().toISOString().split("T")[0];
+  const energySetToday = user.energyDate === today;
+  const todayEnergy: EnergyLevel | null = energySetToday ? (user.todayEnergy ?? null) : null;
 
   const mentorMessage =
     user.lastMentorNote ||
@@ -39,39 +39,34 @@ export default function HomeScreen() {
       recoveryMode: user.recoveryMode,
       progressionPaused: user.progressionPaused,
       energy: todayEnergy,
-    })
+    });
 
-  const effectiveRhythm = adjustCapacityForEnergy(user.currentCapacity, todayEnergy)
-  const setEnergy = (e: EnergyLevel) => dispatch({ type: 'SET_ENERGY', energy: e })
+  const effectiveRhythm = adjustCapacityForEnergy(user.currentCapacity, todayEnergy);
+  const setEnergy = (e: EnergyLevel) => dispatch({ type: "SET_ENERGY", energy: e });
 
-  const todayFocus = todaySchedule[0]
-  const focusSubject = subjects.find((s) => s.id === todayFocus?.subjectId)
-  const focusLecture = focusSubject?.lectures.find((l) => l.id === todayFocus?.lectureId)
-  const syllabus = getSyllabusProgress(subjects)
-  const house = getHouseState(
-    user.totalSessions,
-    user.houseEffortScore,
-    syllabus,
-    {
-      fraction: user.houseProgressFloor ?? 0,
-      totalMinutes: user.houseFloorTotalMinutes ?? syllabus.totalMinutes,
-    },
-  )
-  const scale = getHouseScale(syllabus.totalMinutes)
+  const todayFocus = todaySchedule[0];
+  const focusSubject = subjects.find((s) => s.id === todayFocus?.subjectId);
+  const focusLecture = focusSubject?.lectures.find((l) => l.id === todayFocus?.lectureId);
+  const syllabus = getSyllabusProgress(subjects);
+  const house = getHouseState(user.totalSessions, user.houseEffortScore, syllabus, {
+    fraction: user.houseProgressFloor ?? 0,
+    totalMinutes: user.houseFloorTotalMinutes ?? syllabus.totalMinutes,
+  });
+  const scale = getHouseScale(syllabus.totalMinutes);
 
   const daysUntilExam = user.examDate
     ? Math.max(0, Math.ceil((new Date(user.examDate).getTime() - Date.now()) / 86400000))
-    : null
+    : null;
 
   const startSession = () => {
-    if (!todayFocus) return
+    if (!todayFocus) return;
     dispatch({
-      type: 'START_SESSION',
+      type: "START_SESSION",
       subjectId: todayFocus.subjectId,
       lectureId: todayFocus.lectureId,
       targetMinutes: todayFocus.targetMinutes,
-    })
-  }
+    });
+  };
 
   return (
     <div className="min-h-screen bg-background pb-28">
@@ -84,13 +79,13 @@ export default function HomeScreen() {
           <div className="leading-tight">
             <span className="font-extrabold text-base text-foreground tracking-tight">Brick</span>
             <p className="text-[10px] text-muted-foreground -mt-0.5 font-medium">
-              {greeting}, {user.name.split(' ')[0]}
+              {greeting}, {user.name.split(" ")[0]}
             </p>
           </div>
         </div>
         <div className="flex items-center gap-2">
           <button
-            onClick={() => dispatch({ type: 'NAVIGATE', screen: 'settings' })}
+            onClick={() => dispatch({ type: "NAVIGATE", screen: "settings" })}
             className="relative w-9 h-9 rounded-full bg-card border border-border flex items-center justify-center"
             aria-label="Reminder settings"
           >
@@ -167,9 +162,9 @@ export default function HomeScreen() {
             </p>
             <div className="grid grid-cols-3 gap-2">
               {[
-                { value: 'good' as const, emoji: '😊', label: 'Good' },
-                { value: 'okay' as const, emoji: '🙂', label: 'Okay' },
-                { value: 'low' as const, emoji: '😴', label: 'Low' },
+                { value: "good" as const, emoji: "😊", label: "Good" },
+                { value: "okay" as const, emoji: "🙂", label: "Okay" },
+                { value: "low" as const, emoji: "😴", label: "Low" },
               ].map((o) => (
                 <button
                   key={o.value}
@@ -193,9 +188,9 @@ export default function HomeScreen() {
               </p>
               <span className="text-[10px] font-mono text-muted-foreground">
                 {new Date().toLocaleDateString(undefined, {
-                  weekday: 'short',
-                  day: 'numeric',
-                  month: 'short',
+                  weekday: "short",
+                  day: "numeric",
+                  month: "short",
                 })}
               </span>
             </div>
@@ -206,9 +201,7 @@ export default function HomeScreen() {
                 <p className="text-xl font-extrabold text-foreground leading-tight truncate tracking-tight">
                   {focusSubject.name}
                 </p>
-                <p className="text-sm text-muted-foreground mt-0.5 truncate">
-                  {focusLecture.name}
-                </p>
+                <p className="text-sm text-muted-foreground mt-0.5 truncate">{focusLecture.name}</p>
                 <div className="flex items-center gap-2 mt-2.5">
                   <span className="text-xs font-bold text-primary bg-primary/10 px-2.5 py-1 rounded-full">
                     {todayFocus.targetMinutes} min
@@ -228,11 +221,11 @@ export default function HomeScreen() {
                   <BookOpen size={13} className="text-muted-foreground" />
                   <span className="text-xs text-muted-foreground font-medium">
                     {todaySchedule.slice(1).length} more subject
-                    {todaySchedule.slice(1).length !== 1 ? 's' : ''} after this
+                    {todaySchedule.slice(1).length !== 1 ? "s" : ""} after this
                   </span>
                 </div>
                 <button
-                  onClick={() => dispatch({ type: 'NAVIGATE', screen: 'plan' })}
+                  onClick={() => dispatch({ type: "NAVIGATE", screen: "plan" })}
                   className="text-xs text-primary font-bold flex items-center gap-0.5"
                 >
                   See all <ChevronRight size={12} />
@@ -254,7 +247,7 @@ export default function HomeScreen() {
               </p>
             </div>
             <button
-              onClick={() => dispatch({ type: 'NAVIGATE', screen: 'settings' })}
+              onClick={() => dispatch({ type: "NAVIGATE", screen: "settings" })}
               className="w-full h-11 rounded-2xl bg-white/15 hover:bg-white/20 transition-colors text-sm font-bold"
             >
               Add new subjects to expand your home
@@ -277,11 +270,13 @@ export default function HomeScreen() {
             </p>
             <p className="text-base font-extrabold text-foreground tracking-tight">
               {formatMinutes(effectiveRhythm)}
-              {todayEnergy && todayEnergy !== 'good' && effectiveRhythm !== user.currentCapacity && (
-                <span className="ml-1.5 text-[10px] text-muted-foreground font-medium">
-                  ({todayEnergy === 'low' ? 'low' : 'okay'})
-                </span>
-              )}
+              {todayEnergy &&
+                todayEnergy !== "good" &&
+                effectiveRhythm !== user.currentCapacity && (
+                  <span className="ml-1.5 text-[10px] text-muted-foreground font-medium">
+                    ({todayEnergy === "low" ? "low" : "okay"})
+                  </span>
+                )}
             </p>
           </div>
           {daysUntilExam !== null && daysUntilExam <= 120 && (
@@ -308,5 +303,5 @@ export default function HomeScreen() {
         )}
       </div>
     </div>
-  )
+  );
 }

@@ -80,11 +80,19 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
   head: () => ({
     meta: [
       { charSet: "utf-8" },
-      { name: "viewport", content: "width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover" },
+      {
+        name: "viewport",
+        content:
+          "width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover",
+      },
       { name: "theme-color", content: "#F2EAD9", media: "(prefers-color-scheme: light)" },
       { name: "theme-color", content: "#241B14", media: "(prefers-color-scheme: dark)" },
       { title: "Brick — One Brick At A Time" },
-      { name: "description", content: "Brick is your personal study mentor. It decides what to study and how long, so you only have to show up." },
+      {
+        name: "description",
+        content:
+          "Brick is your personal study mentor. It decides what to study and how long, so you only have to show up.",
+      },
       { name: "author", content: "Brick" },
       { name: "application-name", content: "Brick" },
       { name: "apple-mobile-web-app-title", content: "Brick" },
@@ -92,13 +100,29 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { name: "apple-mobile-web-app-status-bar-style", content: "default" },
       { name: "mobile-web-app-capable", content: "yes" },
       { property: "og:title", content: "Brick — One Brick At A Time" },
-      { property: "og:description", content: "Brick is your personal study mentor. It decides what to study and how long, so you only have to show up." },
+      {
+        property: "og:description",
+        content:
+          "Brick is your personal study mentor. It decides what to study and how long, so you only have to show up.",
+      },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
       { name: "twitter:title", content: "Brick — One Brick At A Time" },
-      { name: "twitter:description", content: "Brick is your personal study mentor. It decides what to study and how long, so you only have to show up." },
-      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/4555d811-00cf-47de-96e1-67365b4305dd/id-preview-ea41e427--4c2ee55b-a367-4692-8969-ae3e3e635a34.lovable.app-1781470406522.png" },
-      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/4555d811-00cf-47de-96e1-67365b4305dd/id-preview-ea41e427--4c2ee55b-a367-4692-8969-ae3e3e635a34.lovable.app-1781470406522.png" },
+      {
+        name: "twitter:description",
+        content:
+          "Brick is your personal study mentor. It decides what to study and how long, so you only have to show up.",
+      },
+      {
+        property: "og:image",
+        content:
+          "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/4555d811-00cf-47de-96e1-67365b4305dd/id-preview-ea41e427--4c2ee55b-a367-4692-8969-ae3e3e635a34.lovable.app-1781470406522.png",
+      },
+      {
+        name: "twitter:image",
+        content:
+          "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/4555d811-00cf-47de-96e1-67365b4305dd/id-preview-ea41e427--4c2ee55b-a367-4692-8969-ae3e3e635a34.lovable.app-1781470406522.png",
+      },
     ],
     links: [
       { rel: "manifest", href: "/manifest.webmanifest" },

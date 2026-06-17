@@ -1,23 +1,23 @@
-'use client'
+"use client";
 
-import { useState } from 'react'
-import { ChevronLeft, ChevronRight, Plus, Trash2, Upload } from 'lucide-react'
-import { cn } from '@/lib/utils'
-import { useStore } from '@/lib/store'
-import { parseSubjectText, SUBJECT_COLORS, SUBJECT_ICONS } from '@/lib/algorithm'
-import type { Subject, SubjectColor, SubjectIcon } from '@/lib/types'
+import { useState } from "react";
+import { ChevronLeft, ChevronRight, Plus, Trash2, Upload } from "lucide-react";
+import { cn } from "@/lib/utils";
+import { useStore } from "@/lib/store";
+import { parseSubjectText, SUBJECT_COLORS, SUBJECT_ICONS } from "@/lib/algorithm";
+import type { Subject, SubjectColor, SubjectIcon } from "@/lib/types";
 
 function makeId() {
-  return Math.random().toString(36).slice(2)
+  return Math.random().toString(36).slice(2);
 }
 
 // ─── Step 1: Personal Info ────────────────────────────────────────────────────
 
 function StepPersonal() {
-  const { state, dispatch } = useStore()
-  const { draft } = state
+  const { state, dispatch } = useStore();
+  const { draft } = state;
 
-  const durations = [15, 20, 25, 30, 45, 60, 90]
+  const durations = [15, 20, 25, 30, 45, 60, 90];
 
   return (
     <div className="flex flex-col gap-6">
@@ -30,9 +30,7 @@ function StepPersonal() {
           type="text"
           placeholder="Your name"
           value={draft.name}
-          onChange={(e) =>
-            dispatch({ type: 'UPDATE_DRAFT', draft: { name: e.target.value } })
-          }
+          onChange={(e) => dispatch({ type: "UPDATE_DRAFT", draft: { name: e.target.value } })}
           className="w-full h-13 px-4 rounded-2xl border border-border bg-card text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/30 text-base"
         />
       </div>
@@ -45,28 +43,24 @@ function StepPersonal() {
           {durations.map((d) => (
             <button
               key={d}
-              onClick={() =>
-                dispatch({ type: 'UPDATE_DRAFT', draft: { comfortableMinutes: d } })
-              }
+              onClick={() => dispatch({ type: "UPDATE_DRAFT", draft: { comfortableMinutes: d } })}
               className={cn(
-                'h-12 rounded-2xl text-sm font-semibold transition-all border',
+                "h-12 rounded-2xl text-sm font-semibold transition-all border",
                 draft.comfortableMinutes === d
-                  ? 'bg-primary text-primary-foreground border-primary shadow-md'
-                  : 'bg-card text-foreground border-border hover:border-primary/40'
+                  ? "bg-primary text-primary-foreground border-primary shadow-md"
+                  : "bg-card text-foreground border-border hover:border-primary/40",
               )}
             >
               {d}m
             </button>
           ))}
           <button
-            onClick={() =>
-              dispatch({ type: 'UPDATE_DRAFT', draft: { comfortableMinutes: 120 } })
-            }
+            onClick={() => dispatch({ type: "UPDATE_DRAFT", draft: { comfortableMinutes: 120 } })}
             className={cn(
-              'h-12 rounded-2xl text-sm font-semibold transition-all border',
+              "h-12 rounded-2xl text-sm font-semibold transition-all border",
               draft.comfortableMinutes === 120
-                ? 'bg-primary text-primary-foreground border-primary shadow-md'
-                : 'bg-card text-foreground border-border hover:border-primary/40'
+                ? "bg-primary text-primary-foreground border-primary shadow-md"
+                : "bg-card text-foreground border-border hover:border-primary/40",
             )}
           >
             2h
@@ -85,31 +79,32 @@ function StepPersonal() {
           {[30, 45, 60, 90, 120].map((d) => (
             <button
               key={d}
-              onClick={() => dispatch({ type: 'UPDATE_DRAFT', draft: { maxRhythm: d } })}
+              onClick={() => dispatch({ type: "UPDATE_DRAFT", draft: { maxRhythm: d } })}
               className={cn(
-                'h-12 rounded-2xl text-sm font-semibold transition-all border',
+                "h-12 rounded-2xl text-sm font-semibold transition-all border",
                 draft.maxRhythm === d
-                  ? 'bg-primary text-primary-foreground border-primary shadow-md'
-                  : 'bg-card text-foreground border-border hover:border-primary/40',
+                  ? "bg-primary text-primary-foreground border-primary shadow-md"
+                  : "bg-card text-foreground border-border hover:border-primary/40",
               )}
             >
-              {d >= 60 ? `${d / 60}h${d % 60 ? ` ${d % 60}m` : ''}` : `${d}m`}
+              {d >= 60 ? `${d / 60}h${d % 60 ? ` ${d % 60}m` : ""}` : `${d}m`}
             </button>
           ))}
         </div>
         <p className="text-xs text-muted-foreground mt-2">
-          Brick adapts to your pace, but it will never recommend more than 2 hours in a single session.
+          Brick adapts to your pace, but it will never recommend more than 2 hours in a single
+          session.
         </p>
       </div>
     </div>
-  )
+  );
 }
 
 // ─── Step 2: Exam Info ────────────────────────────────────────────────────────
 
 function StepExam() {
-  const { state, dispatch } = useStore()
-  const { draft } = state
+  const { state, dispatch } = useStore();
+  const { draft } = state;
 
   return (
     <div className="flex flex-col gap-5">
@@ -122,9 +117,7 @@ function StepExam() {
           type="text"
           placeholder="e.g. NEET 2025, Final Exams, UPSC"
           value={draft.examName}
-          onChange={(e) =>
-            dispatch({ type: 'UPDATE_DRAFT', draft: { examName: e.target.value } })
-          }
+          onChange={(e) => dispatch({ type: "UPDATE_DRAFT", draft: { examName: e.target.value } })}
           className="w-full h-13 px-4 rounded-2xl border border-border bg-card text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/30 text-base"
         />
       </div>
@@ -137,21 +130,20 @@ function StepExam() {
           id="date"
           type="date"
           value={draft.examDate}
-          min={new Date().toISOString().split('T')[0]}
-          onChange={(e) =>
-            dispatch({ type: 'UPDATE_DRAFT', draft: { examDate: e.target.value } })
-          }
+          min={new Date().toISOString().split("T")[0]}
+          onChange={(e) => dispatch({ type: "UPDATE_DRAFT", draft: { examDate: e.target.value } })}
           className="w-full h-13 px-4 rounded-2xl border border-border bg-card text-foreground focus:outline-none focus:ring-2 focus:ring-primary/30 text-base"
         />
       </div>
 
       <div className="bg-muted rounded-2xl p-4">
         <p className="text-sm text-muted-foreground leading-relaxed">
-          This helps us pace your study sessions and show you a countdown. You can always change it later.
+          This helps us pace your study sessions and show you a countdown. You can always change it
+          later.
         </p>
       </div>
     </div>
-  )
+  );
 }
 
 // ─── Step 3: Import Lectures ──────────────────────────────────────────────────
@@ -160,35 +152,35 @@ function StepImport({
   subjects,
   setSubjects,
 }: {
-  subjects: Subject[]
-  setSubjects: (s: Subject[]) => void
+  subjects: Subject[];
+  setSubjects: (s: Subject[]) => void;
 }) {
-  const [tab, setTab] = useState<'paste' | 'manual'>('manual')
-  const [pasteText, setPasteText] = useState('')
-  const [parseError, setParseError] = useState('')
+  const [tab, setTab] = useState<"paste" | "manual">("manual");
+  const [pasteText, setPasteText] = useState("");
+  const [parseError, setParseError] = useState("");
 
   const addSubject = () => {
-    const colorIdx = subjects.length % SUBJECT_COLORS.length
-    const iconIdx = subjects.length % SUBJECT_ICONS.length
+    const colorIdx = subjects.length % SUBJECT_COLORS.length;
+    const iconIdx = subjects.length % SUBJECT_ICONS.length;
     setSubjects([
       ...subjects,
       {
         id: makeId(),
-        name: 'New Subject',
+        name: "New Subject",
         color: SUBJECT_COLORS[colorIdx],
         icon: SUBJECT_ICONS[iconIdx],
         lectures: [],
       },
-    ])
-  }
+    ]);
+  };
 
   const updateSubject = (id: string, updates: Partial<Subject>) => {
-    setSubjects(subjects.map((s) => (s.id === id ? { ...s, ...updates } : s)))
-  }
+    setSubjects(subjects.map((s) => (s.id === id ? { ...s, ...updates } : s)));
+  };
 
   const removeSubject = (id: string) => {
-    setSubjects(subjects.filter((s) => s.id !== id))
-  }
+    setSubjects(subjects.filter((s) => s.id !== id));
+  };
 
   const addLecture = (subjectId: string) => {
     setSubjects(
@@ -198,49 +190,51 @@ function StepImport({
               ...s,
               lectures: [
                 ...s.lectures,
-                { id: makeId(), name: `Lecture ${s.lectures.length + 1}`, durationMinutes: 45, status: 'pending', watchedMinutes: 0 },
+                {
+                  id: makeId(),
+                  name: `Lecture ${s.lectures.length + 1}`,
+                  durationMinutes: 45,
+                  status: "pending",
+                  watchedMinutes: 0,
+                },
               ],
             }
-          : s
-      )
-    )
-  }
+          : s,
+      ),
+    );
+  };
 
   const updateLecture = (
     subjectId: string,
     lectureId: string,
-    updates: { name?: string; durationMinutes?: number }
+    updates: { name?: string; durationMinutes?: number },
   ) => {
     setSubjects(
       subjects.map((s) =>
         s.id === subjectId
           ? {
               ...s,
-              lectures: s.lectures.map((l) =>
-                l.id === lectureId ? { ...l, ...updates } : l
-              ),
+              lectures: s.lectures.map((l) => (l.id === lectureId ? { ...l, ...updates } : l)),
             }
-          : s
-      )
-    )
-  }
+          : s,
+      ),
+    );
+  };
 
   const removeLecture = (subjectId: string, lectureId: string) => {
     setSubjects(
       subjects.map((s) =>
-        s.id === subjectId
-          ? { ...s, lectures: s.lectures.filter((l) => l.id !== lectureId) }
-          : s
-      )
-    )
-  }
+        s.id === subjectId ? { ...s, lectures: s.lectures.filter((l) => l.id !== lectureId) } : s,
+      ),
+    );
+  };
 
   const parsePaste = () => {
     try {
-      const parsed = parseSubjectText(pasteText)
+      const parsed = parseSubjectText(pasteText);
       if (parsed.length === 0) {
-        setParseError('No valid subjects found. Check the format below.')
-        return
+        setParseError("No valid subjects found. Check the format below.");
+        return;
       }
       const newSubjects: Subject[] = parsed.map((s, i) => ({
         id: makeId(),
@@ -251,46 +245,44 @@ function StepImport({
           id: makeId(),
           name: l.name,
           durationMinutes: l.durationMinutes,
-          status: 'pending' as const,
+          status: "pending" as const,
           watchedMinutes: 0,
         })),
-      }))
-      setSubjects([...subjects, ...newSubjects])
-      setPasteText('')
-      setParseError('')
-      setTab('manual')
+      }));
+      setSubjects([...subjects, ...newSubjects]);
+      setPasteText("");
+      setParseError("");
+      setTab("manual");
     } catch {
-      setParseError('Could not parse the text. Please check the format.')
+      setParseError("Could not parse the text. Please check the format.");
     }
-  }
+  };
 
   return (
     <div className="flex flex-col gap-4">
       {/* Tabs */}
       <div className="flex bg-muted rounded-xl p-1">
-        {(['manual', 'paste'] as const).map((t) => (
+        {(["manual", "paste"] as const).map((t) => (
           <button
             key={t}
             onClick={() => setTab(t)}
             className={cn(
-              'flex-1 py-2 text-sm font-medium rounded-lg transition-all',
-              tab === t
-                ? 'bg-card text-foreground shadow-sm'
-                : 'text-muted-foreground'
+              "flex-1 py-2 text-sm font-medium rounded-lg transition-all",
+              tab === t ? "bg-card text-foreground shadow-sm" : "text-muted-foreground",
             )}
           >
-            {t === 'manual' ? 'Manual Entry' : 'Paste Text'}
+            {t === "manual" ? "Manual Entry" : "Paste Text"}
           </button>
         ))}
       </div>
 
-      {tab === 'paste' ? (
+      {tab === "paste" ? (
         <div className="flex flex-col gap-3">
           <textarea
             value={pasteText}
             onChange={(e) => {
-              setPasteText(e.target.value)
-              setParseError('')
+              setPasteText(e.target.value);
+              setParseError("");
             }}
             placeholder={`Physics\nLecture 1 – 45 min\nLecture 2 – 38 min\n\nChemistry\nLecture 1 – 52 min`}
             rows={8}
@@ -312,7 +304,10 @@ function StepImport({
       ) : (
         <div className="flex flex-col gap-3 max-h-[50vh] overflow-y-auto">
           {subjects.map((subject) => (
-            <div key={subject.id} className="bg-card rounded-2xl border border-border overflow-hidden">
+            <div
+              key={subject.id}
+              className="bg-card rounded-2xl border border-border overflow-hidden"
+            >
               {/* Subject header */}
               <div className="flex items-center gap-3 px-4 py-3 border-b border-border/60">
                 <input
@@ -390,43 +385,43 @@ function StepImport({
         </div>
       )}
     </div>
-  )
+  );
 }
 
 // ─── Main Onboarding ──────────────────────────────────────────────────────────
 
-const STEPS = ['About You', 'Your Exam', 'Your Subjects']
+const STEPS = ["About You", "Your Exam", "Your Subjects"];
 
 export default function OnboardingScreen() {
-  const { state, dispatch } = useStore()
-  const step = state.onboardingStep
-  const [subjects, setSubjects] = useState<Subject[]>([])
+  const { state, dispatch } = useStore();
+  const step = state.onboardingStep;
+  const [subjects, setSubjects] = useState<Subject[]>([]);
 
   const canProceed = () => {
-    if (step === 0) return state.draft.comfortableMinutes > 0
-    if (step === 1) return true // exam info optional
+    if (step === 0) return state.draft.comfortableMinutes > 0;
+    if (step === 1) return true; // exam info optional
     if (step === 2) {
-      const total = subjects.reduce((acc, s) => acc + s.lectures.length, 0)
-      return subjects.length > 0 && total > 0
+      const total = subjects.reduce((acc, s) => acc + s.lectures.length, 0);
+      return subjects.length > 0 && total > 0;
     }
-    return true
-  }
+    return true;
+  };
 
   const next = () => {
     if (step < STEPS.length - 1) {
-      dispatch({ type: 'SET_ONBOARDING_STEP', step: step + 1 })
+      dispatch({ type: "SET_ONBOARDING_STEP", step: step + 1 });
     } else {
-      dispatch({ type: 'COMPLETE_ONBOARDING', subjects })
+      dispatch({ type: "COMPLETE_ONBOARDING", subjects });
     }
-  }
+  };
 
   const back = () => {
     if (step === 0) {
-      dispatch({ type: 'NAVIGATE', screen: 'welcome' })
+      dispatch({ type: "NAVIGATE", screen: "welcome" });
     } else {
-      dispatch({ type: 'SET_ONBOARDING_STEP', step: step - 1 })
+      dispatch({ type: "SET_ONBOARDING_STEP", step: step - 1 });
     }
-  }
+  };
 
   return (
     <div className="min-h-screen bg-background flex flex-col">
@@ -447,8 +442,8 @@ export default function OnboardingScreen() {
               <div
                 key={i}
                 className={cn(
-                  'h-1 flex-1 rounded-full transition-all duration-300',
-                  i <= step ? 'bg-primary' : 'bg-border'
+                  "h-1 flex-1 rounded-full transition-all duration-300",
+                  i <= step ? "bg-primary" : "bg-border",
                 )}
               />
             ))}
@@ -462,19 +457,19 @@ export default function OnboardingScreen() {
       {/* Content */}
       <div className="flex-1 px-5 overflow-y-auto pb-32">
         <p className="text-[10px] font-mono uppercase tracking-[0.22em] text-primary/80 mb-1">
-          {step === 0 && 'Chapter One'}
-          {step === 1 && 'Chapter Two'}
-          {step === 2 && 'Chapter Three'}
+          {step === 0 && "Chapter One"}
+          {step === 1 && "Chapter Two"}
+          {step === 2 && "Chapter Three"}
         </p>
         <h2 className="font-heading text-3xl text-foreground mb-1 text-balance leading-tight">
-          {step === 0 && 'Tell us about yourself'}
-          {step === 1 && 'What are you building toward?'}
-          {step === 2 && 'Bring in your subjects'}
+          {step === 0 && "Tell us about yourself"}
+          {step === 1 && "What are you building toward?"}
+          {step === 2 && "Bring in your subjects"}
         </h2>
         <p className="text-sm text-muted-foreground mb-6 leading-relaxed italic">
-          {step === 0 && 'A few quiet questions — so today\'s rhythm fits you.'}
-          {step === 1 && 'Optional. A horizon line, gently kept in view.'}
-          {step === 2 && 'Drop in your lectures. Brick handles the rest.'}
+          {step === 0 && "A few quiet questions — so today's rhythm fits you."}
+          {step === 1 && "Optional. A horizon line, gently kept in view."}
+          {step === 2 && "Drop in your lectures. Brick handles the rest."}
         </p>
 
         {step === 0 && <StepPersonal />}
@@ -489,10 +484,10 @@ export default function OnboardingScreen() {
           disabled={!canProceed()}
           className="w-full h-14 bg-primary text-primary-foreground rounded-2xl font-heading font-semibold text-base flex items-center justify-center gap-2 disabled:opacity-40 active:scale-[0.98] transition-transform shadow-lg shadow-primary/20"
         >
-          {step === STEPS.length - 1 ? 'Begin your build' : 'Continue'}
+          {step === STEPS.length - 1 ? "Begin your build" : "Continue"}
           <ChevronRight size={18} />
         </button>
       </div>
     </div>
-  )
+  );
 }

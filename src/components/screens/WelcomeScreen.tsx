@@ -1,8 +1,8 @@
-'use client'
+"use client";
 
-import { useState } from 'react'
-import { ArrowRight } from 'lucide-react'
-import { useStore } from '@/lib/store'
+import { useState } from "react";
+import { ArrowRight } from "lucide-react";
+import { useStore } from "@/lib/store";
 
 // Calm builder illustrations — stones, foundation, finished home
 function StonesIllustration() {
@@ -23,7 +23,7 @@ function StonesIllustration() {
       <ellipse cx="108" cy="106" rx="16" ry="6" fill="#D4AC85" />
       <ellipse cx="110" cy="96" rx="11" ry="5" fill="#E2BE99" />
     </svg>
-  )
+  );
 }
 
 function FoundationIllustration() {
@@ -33,16 +33,36 @@ function FoundationIllustration() {
       {/* Ground */}
       <rect x="40" y="130" width="140" height="30" rx="3" fill="#B89868" />
       {/* Foundation bricks */}
-      {[0,1,2,3,4,5].map(i => (
-        <rect key={i} x={50 + i * 20} y="118" width="18" height="10" rx="1" fill="#A65E38" stroke="#7C4220" strokeWidth="0.5" />
+      {[0, 1, 2, 3, 4, 5].map((i) => (
+        <rect
+          key={i}
+          x={50 + i * 20}
+          y="118"
+          width="18"
+          height="10"
+          rx="1"
+          fill="#A65E38"
+          stroke="#7C4220"
+          strokeWidth="0.5"
+        />
       ))}
-      {[0,1,2,3,4].map(i => (
-        <rect key={i} x={60 + i * 20} y="106" width="18" height="10" rx="1" fill="#B07A4E" stroke="#7C4220" strokeWidth="0.5" />
+      {[0, 1, 2, 3, 4].map((i) => (
+        <rect
+          key={i}
+          x={60 + i * 20}
+          y="106"
+          width="18"
+          height="10"
+          rx="1"
+          fill="#B07A4E"
+          stroke="#7C4220"
+          strokeWidth="0.5"
+        />
       ))}
       {/* Sun */}
       <circle cx="160" cy="60" r="10" fill="#F2C879" />
     </svg>
-  )
+  );
 }
 
 function HomeIllustration() {
@@ -58,48 +78,48 @@ function HomeIllustration() {
       <circle cx="160" cy="60" r="10" fill="#F2C879" />
       <rect x="138" y="70" width="4" height="8" fill="#8B5E3C" />
     </svg>
-  )
+  );
 }
 
 const slides = [
   {
     illustration: <StonesIllustration />,
-    heading: 'Welcome to Brick.',
-    body: 'We build the plan.\nYou place the bricks.',
+    heading: "Welcome to Brick.",
+    body: "We build the plan.\nYou place the bricks.",
   },
   {
     illustration: <FoundationIllustration />,
-    heading: 'Slow, steady,\nbuilt to last.',
-    body: 'No streaks. No guilt. Just consistent, honest progress — one quiet session at a time.',
+    heading: "Slow, steady,\nbuilt to last.",
+    body: "No streaks. No guilt. Just consistent, honest progress — one quiet session at a time.",
   },
   {
     illustration: <HomeIllustration />,
-    heading: 'Knowledge becomes\na home.',
-    body: 'Every study session lays one more brick. Watch your home rise — stage by stage — as you learn.',
+    heading: "Knowledge becomes\na home.",
+    body: "Every study session lays one more brick. Watch your home rise — stage by stage — as you learn.",
   },
-]
+];
 
 export default function WelcomeScreen() {
-  const { dispatch } = useStore()
-  const [slide, setSlide] = useState(0)
-  const isLast = slide === slides.length - 1
-  const current = slides[slide]
+  const { dispatch } = useStore();
+  const [slide, setSlide] = useState(0);
+  const isLast = slide === slides.length - 1;
+  const current = slides[slide];
 
   return (
     <div className="min-h-screen flex flex-col bg-background px-6 py-10">
       <div className="flex justify-between items-center">
-        <p className="text-[10px] font-mono uppercase tracking-[0.22em] text-primary/80">— Brick —</p>
+        <p className="text-[10px] font-mono uppercase tracking-[0.22em] text-primary/80">
+          — Brick —
+        </p>
         <button
-          onClick={() => dispatch({ type: 'NAVIGATE', screen: 'onboarding' })}
+          onClick={() => dispatch({ type: "NAVIGATE", screen: "onboarding" })}
           className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors py-1 px-2"
         >
           Skip
         </button>
       </div>
 
-      <div className="flex-1 flex items-center justify-center py-6">
-        {current.illustration}
-      </div>
+      <div className="flex-1 flex items-center justify-center py-6">{current.illustration}</div>
 
       <div className="pb-8">
         <h1 className="font-heading text-4xl text-foreground leading-[1.05] mb-3 whitespace-pre-line">
@@ -115,7 +135,7 @@ export default function WelcomeScreen() {
               key={i}
               onClick={() => setSlide(i)}
               className={`h-1 rounded-full transition-all duration-300 ${
-                i === slide ? 'w-8 bg-primary' : 'w-1.5 bg-border'
+                i === slide ? "w-8 bg-primary" : "w-1.5 bg-border"
               }`}
               aria-label={`Go to slide ${i + 1}`}
             />
@@ -124,14 +144,20 @@ export default function WelcomeScreen() {
 
         <button
           onClick={() => {
-            if (isLast) dispatch({ type: 'NAVIGATE', screen: 'onboarding' })
-            else setSlide((s) => s + 1)
+            if (isLast) dispatch({ type: "NAVIGATE", screen: "onboarding" });
+            else setSlide((s) => s + 1);
           }}
           className="w-full h-14 bg-primary text-primary-foreground rounded-2xl font-heading text-lg flex items-center justify-center gap-2 active:scale-[0.98] transition-transform shadow-hearth"
         >
-          {isLast ? (<>Begin your build <ArrowRight size={18} /></>) : 'Next'}
+          {isLast ? (
+            <>
+              Begin your build <ArrowRight size={18} />
+            </>
+          ) : (
+            "Next"
+          )}
         </button>
       </div>
     </div>
-  )
+  );
 }

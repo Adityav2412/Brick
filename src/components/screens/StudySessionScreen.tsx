@@ -1,6 +1,6 @@
-'use client'
+"use client";
 
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState } from "react";
 import {
   ChevronLeft,
   Pause,
@@ -10,112 +10,111 @@ import {
   Bookmark,
   XCircle,
   Check,
-} from 'lucide-react'
-import { cn } from '@/lib/utils'
-import { useStore } from '@/lib/store'
-import { formatTimer } from '@/lib/algorithm'
-import SubjectIcon from '@/components/SubjectIcon'
+} from "lucide-react";
+import { cn } from "@/lib/utils";
+import { useStore } from "@/lib/store";
+import { formatTimer } from "@/lib/algorithm";
+import SubjectIcon from "@/components/SubjectIcon";
 
 export default function StudySessionScreen() {
-  const { state, dispatch } = useStore()
-  const { activeSession, subjects } = state
+  const { state, dispatch } = useStore();
+  const { activeSession, subjects } = state;
 
-  const [elapsed, setElapsed] = useState(0)
-  const [showEndConfirm, setShowEndConfirm] = useState(false)
-  const [autoPausedNotice, setAutoPausedNotice] = useState(false)
-  const lastHiddenAtRef = useRef<number | null>(null)
-  const intervalRef = useRef<NodeJS.Timeout | null>(null)
+  const [elapsed, setElapsed] = useState(0);
+  const [showEndConfirm, setShowEndConfirm] = useState(false);
+  const [autoPausedNotice, setAutoPausedNotice] = useState(false);
+  const lastHiddenAtRef = useRef<number | null>(null);
+  const intervalRef = useRef<NodeJS.Timeout | null>(null);
 
-  const subject = subjects.find((s) => s.id === activeSession?.subjectId)
-  const lecture = subject?.lectures.find((l) => l.id === activeSession?.lectureId)
+  const subject = subjects.find((s) => s.id === activeSession?.subjectId);
+  const lecture = subject?.lectures.find((l) => l.id === activeSession?.lectureId);
 
-  const isPaused = !!activeSession?.pausedAt
+  const isPaused = !!activeSession?.pausedAt;
 
   // Calculate live elapsed time
   useEffect(() => {
-    if (!activeSession) return
+    if (!activeSession) return;
 
     const tick = () => {
       if (activeSession.pausedAt) {
         const pausedElapsed = Math.floor(
-          (activeSession.pausedAt - activeSession.startTime - activeSession.totalPausedMs) / 1000
-        )
-        setElapsed(Math.max(0, pausedElapsed))
-        return
+          (activeSession.pausedAt - activeSession.startTime - activeSession.totalPausedMs) / 1000,
+        );
+        setElapsed(Math.max(0, pausedElapsed));
+        return;
       }
-      const now = Date.now()
+      const now = Date.now();
       const activeElapsed = Math.floor(
-        (now - activeSession.startTime - activeSession.totalPausedMs) / 1000
-      )
-      setElapsed(Math.max(0, activeElapsed))
-    }
+        (now - activeSession.startTime - activeSession.totalPausedMs) / 1000,
+      );
+      setElapsed(Math.max(0, activeElapsed));
+    };
 
-    tick()
-    intervalRef.current = setInterval(tick, 1000)
+    tick();
+    intervalRef.current = setInterval(tick, 1000);
     return () => {
-      if (intervalRef.current) clearInterval(intervalRef.current)
-    }
-  }, [activeSession])
+      if (intervalRef.current) clearInterval(intervalRef.current);
+    };
+  }, [activeSession]);
 
   // ─── Soft inactivity guard ───────────────────────────────────────────
   // Short background periods (phone auto-lock, glancing at a notification,
   // switching to lecture video on another device) keep the session running.
   // Only pause if the app has been inactive for more than 30 minutes, so
   // unattended time can't silently accumulate into fake progress.
-  const INACTIVITY_LIMIT_MS = 30 * 60 * 1000
+  const INACTIVITY_LIMIT_MS = 30 * 60 * 1000;
   useEffect(() => {
-    if (!activeSession) return
+    if (!activeSession) return;
 
     const onHidden = () => {
-      if (!state.activeSession || state.activeSession.pausedAt !== null) return
-      lastHiddenAtRef.current = Date.now()
-    }
+      if (!state.activeSession || state.activeSession.pausedAt !== null) return;
+      lastHiddenAtRef.current = Date.now();
+    };
     const onVisible = () => {
-      const hiddenAt = lastHiddenAtRef.current
-      lastHiddenAtRef.current = null
-      if (!hiddenAt) return
-      if (!state.activeSession || state.activeSession.pausedAt !== null) return
+      const hiddenAt = lastHiddenAtRef.current;
+      lastHiddenAtRef.current = null;
+      if (!hiddenAt) return;
+      if (!state.activeSession || state.activeSession.pausedAt !== null) return;
       if (Date.now() - hiddenAt > INACTIVITY_LIMIT_MS) {
-        dispatch({ type: 'PAUSE_SESSION' })
-        setAutoPausedNotice(true)
+        dispatch({ type: "PAUSE_SESSION" });
+        setAutoPausedNotice(true);
       }
-    }
+    };
     const onVisibilityChange = () => {
-      if (document.visibilityState === 'hidden') onHidden()
-      else onVisible()
-    }
-    window.addEventListener('blur', onHidden)
-    window.addEventListener('focus', onVisible)
-    window.addEventListener('pagehide', onHidden)
-    document.addEventListener('visibilitychange', onVisibilityChange)
+      if (document.visibilityState === "hidden") onHidden();
+      else onVisible();
+    };
+    window.addEventListener("blur", onHidden);
+    window.addEventListener("focus", onVisible);
+    window.addEventListener("pagehide", onHidden);
+    document.addEventListener("visibilitychange", onVisibilityChange);
     return () => {
-      window.removeEventListener('blur', onHidden)
-      window.removeEventListener('focus', onVisible)
-      window.removeEventListener('pagehide', onHidden)
-      document.removeEventListener('visibilitychange', onVisibilityChange)
-    }
-  }, [activeSession, state.activeSession, dispatch])
+      window.removeEventListener("blur", onHidden);
+      window.removeEventListener("focus", onVisible);
+      window.removeEventListener("pagehide", onHidden);
+      document.removeEventListener("visibilitychange", onVisibilityChange);
+    };
+  }, [activeSession, state.activeSession, dispatch]);
 
   if (!activeSession || !subject || !lecture) {
-    return <IdleSessionView />
+    return <IdleSessionView />;
   }
 
-
-  const targetSeconds = activeSession.targetMinutes * 60
-  const remainingSeconds = Math.max(0, targetSeconds - elapsed)
-  const progressPct = Math.min(elapsed / targetSeconds, 1)
-  const isComplete = elapsed >= targetSeconds
+  const targetSeconds = activeSession.targetMinutes * 60;
+  const remainingSeconds = Math.max(0, targetSeconds - elapsed);
+  const progressPct = Math.min(elapsed / targetSeconds, 1);
+  const isComplete = elapsed >= targetSeconds;
 
   const handleEnd = (completed: boolean) => {
-    if (intervalRef.current) clearInterval(intervalRef.current)
-    dispatch({ type: 'END_SESSION', actualSeconds: elapsed, completed })
-    setShowEndConfirm(false)
-  }
+    if (intervalRef.current) clearInterval(intervalRef.current);
+    dispatch({ type: "END_SESSION", actualSeconds: elapsed, completed });
+    setShowEndConfirm(false);
+  };
 
   const handleSkip = () => {
-    if (intervalRef.current) clearInterval(intervalRef.current)
-    dispatch({ type: 'SKIP_SESSION' })
-  }
+    if (intervalRef.current) clearInterval(intervalRef.current);
+    dispatch({ type: "SKIP_SESSION" });
+  };
 
   return (
     <div className="min-h-screen bg-background flex flex-col">
@@ -139,13 +138,11 @@ export default function StudySessionScreen() {
       <div className="flex-1 px-5 flex flex-col gap-4">
         {autoPausedNotice && isPaused && (
           <div className="bg-card border border-border rounded-2xl p-4 flex items-center justify-between gap-3">
-            <p className="text-sm text-foreground">
-              Session paused due to extended inactivity.
-            </p>
+            <p className="text-sm text-foreground">Session paused due to extended inactivity.</p>
             <button
               onClick={() => {
-                dispatch({ type: 'RESUME_SESSION' })
-                setAutoPausedNotice(false)
+                dispatch({ type: "RESUME_SESSION" });
+                setAutoPausedNotice(false);
               }}
               className="px-4 h-10 rounded-xl bg-primary text-primary-foreground text-sm font-semibold shrink-0"
             >
@@ -165,13 +162,13 @@ export default function StudySessionScreen() {
             </div>
             <span
               className={cn(
-                'text-[11px] font-semibold px-3 py-1 rounded-full',
+                "text-[11px] font-semibold px-3 py-1 rounded-full",
                 isComplete
-                  ? 'bg-[#22C55E]/20 text-[#86efac]'
-                  : 'bg-white/15 text-primary-foreground'
+                  ? "bg-[#22C55E]/20 text-[#86efac]"
+                  : "bg-white/15 text-primary-foreground",
               )}
             >
-              {isComplete ? 'Complete!' : 'In Progress'}
+              {isComplete ? "Complete!" : "In Progress"}
             </span>
           </div>
 
@@ -182,11 +179,11 @@ export default function StudySessionScreen() {
             </span>
             <button
               onClick={() => {
-                if (isPaused) dispatch({ type: 'RESUME_SESSION' })
-                else dispatch({ type: 'PAUSE_SESSION' })
+                if (isPaused) dispatch({ type: "RESUME_SESSION" });
+                else dispatch({ type: "PAUSE_SESSION" });
               }}
               className="w-14 h-14 rounded-full border-2 border-white/30 flex items-center justify-center active:scale-95 transition-transform"
-              aria-label={isPaused ? 'Resume' : 'Pause'}
+              aria-label={isPaused ? "Resume" : "Pause"}
             >
               {isPaused ? (
                 <Play size={22} className="text-primary-foreground ml-0.5" fill="currentColor" />
@@ -235,15 +232,14 @@ export default function StudySessionScreen() {
               style={{
                 width: `${Math.min(
                   ((lecture.watchedMinutes + elapsed / 60) / lecture.durationMinutes) * 100,
-                  100
+                  100,
                 )}%`,
               }}
             />
           </div>
           <p className="text-xs text-muted-foreground">
-            {Math.round(
-              ((lecture.watchedMinutes + elapsed / 60) / lecture.durationMinutes) * 100
-            )}% of lecture
+            {Math.round(((lecture.watchedMinutes + elapsed / 60) / lecture.durationMinutes) * 100)}%
+            of lecture
           </p>
         </div>
 
@@ -367,34 +363,32 @@ export default function StudySessionScreen() {
         </div>
       )}
     </div>
-  )
+  );
 }
 
 function IdleSessionView() {
-  const { state, dispatch } = useStore()
+  const { state, dispatch } = useStore();
   const nextItem = state.todaySchedule.find(
-    (i) => i.status === 'in-progress' || i.status === 'upcoming'
-  )
-  const subject = nextItem
-    ? state.subjects.find((s) => s.id === nextItem.subjectId)
-    : undefined
-  const lecture = subject?.lectures.find((l) => l.id === nextItem?.lectureId)
+    (i) => i.status === "in-progress" || i.status === "upcoming",
+  );
+  const subject = nextItem ? state.subjects.find((s) => s.id === nextItem.subjectId) : undefined;
+  const lecture = subject?.lectures.find((l) => l.id === nextItem?.lectureId);
 
   const handleStart = () => {
-    if (!nextItem) return
+    if (!nextItem) return;
     dispatch({
-      type: 'START_SESSION',
+      type: "START_SESSION",
       subjectId: nextItem.subjectId,
       lectureId: nextItem.lectureId,
       targetMinutes: nextItem.targetMinutes,
-    })
-  }
+    });
+  };
 
   return (
     <div className="min-h-screen bg-background flex flex-col">
       <div className="flex items-center justify-between px-5 pt-14 pb-4">
         <button
-          onClick={() => dispatch({ type: 'NAVIGATE', screen: 'home' })}
+          onClick={() => dispatch({ type: "NAVIGATE", screen: "home" })}
           className="w-9 h-9 rounded-full bg-card border border-border flex items-center justify-center shadow-sm"
           aria-label="Back"
         >
@@ -408,10 +402,10 @@ function IdleSessionView() {
         <div className="bg-primary rounded-3xl p-6 flex flex-col gap-4">
           <div>
             <p className="font-heading font-bold text-2xl text-primary-foreground leading-tight">
-              {subject?.name ?? 'Ready when you are'}
+              {subject?.name ?? "Ready when you are"}
             </p>
             <p className="text-primary-foreground/70 text-sm mt-0.5">
-              {lecture?.name ?? 'No session active'}
+              {lecture?.name ?? "No session active"}
             </p>
           </div>
           <div className="font-heading font-bold text-7xl text-primary-foreground tracking-tight tabular-nums">
@@ -442,7 +436,7 @@ function IdleSessionView() {
               Open Blueprint to plan today&apos;s study, or rest — recovery counts too.
             </p>
             <button
-              onClick={() => dispatch({ type: 'NAVIGATE', screen: 'plan' })}
+              onClick={() => dispatch({ type: "NAVIGATE", screen: "plan" })}
               className="w-full h-12 bg-primary text-primary-foreground rounded-2xl font-semibold"
             >
               Open Blueprint
@@ -451,6 +445,5 @@ function IdleSessionView() {
         )}
       </div>
     </div>
-  )
+  );
 }
-

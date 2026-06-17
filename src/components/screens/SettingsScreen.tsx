@@ -24,6 +24,7 @@ import { useTheme, type ThemeMode } from "@/lib/theme";
 import { cn } from "@/lib/utils";
 import { useStore, exportBackup, importBackup } from "@/lib/store";
 import { getAutoBackups, AutoBackup } from "@/lib/backup";
+import { toast } from "sonner";
 import {
   getReminderSettings,
   setReminderSettings,
@@ -736,9 +737,9 @@ function BackupCard() {
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.href = url;
-    a.download = `brick-backup-${new Date().toISOString().slice(0, 10)}.json`;
     a.click();
     URL.revokeObjectURL(url);
+    toast.success("Backup downloaded.");
     setStatus({ kind: "ok", message: "Backup downloaded." });
   };
 
@@ -751,9 +752,11 @@ function BackupCard() {
       if (typeof text !== "string") return;
       const result = importBackup(text);
       if (result.ok) {
+        toast.success("Backup restored. Reloading…");
         setStatus({ kind: "ok", message: "Backup restored. Reloading…" });
         setTimeout(() => window.location.reload(), 600);
       } else {
+        toast.error(result.error);
         setStatus({ kind: "err", message: result.error });
       }
     };
@@ -770,9 +773,11 @@ function BackupCard() {
       return;
     const result = importBackup(JSON.stringify(backup.data));
     if (result.ok) {
+      toast.success("Auto-backup restored. Reloading…");
       setStatus({ kind: "ok", message: "Auto-backup restored. Reloading…" });
       setTimeout(() => window.location.reload(), 600);
     } else {
+      toast.error(result.error);
       setStatus({ kind: "err", message: result.error });
     }
   };
@@ -846,7 +851,6 @@ function BackupCard() {
 }
 
 // ─── Reset confirm ─────────────────────────────────────────────────────────
-
 
 function ResetButton() {
   const { dispatch } = useStore();

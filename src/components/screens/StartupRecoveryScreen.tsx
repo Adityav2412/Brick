@@ -2,6 +2,7 @@ import React, { useRef, useState } from "react";
 import { Upload, RefreshCw, AlertCircle } from "lucide-react";
 import { useStore, importBackup } from "@/lib/store";
 import { cn } from "@/lib/utils";
+import { toast } from "sonner";
 
 export default function StartupRecoveryScreen() {
   const { dispatch } = useStore();
@@ -23,9 +24,11 @@ export default function StartupRecoveryScreen() {
       if (typeof text !== "string") return;
       const result = importBackup(text);
       if (result.ok) {
+        toast.success("Backup restored. Reloading…");
         setStatus({ kind: "ok", message: "Backup restored. Reloading…" });
         setTimeout(() => window.location.reload(), 600);
       } else {
+        toast.error(result.error);
         setStatus({ kind: "err", message: result.error });
       }
     };

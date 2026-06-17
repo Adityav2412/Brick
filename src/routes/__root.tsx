@@ -10,9 +10,10 @@ import {
 import { useEffect, type ReactNode } from "react";
 
 import appCss from "../styles.css?url";
-import { reportLovableError } from "../lib/lovable-error-reporting";
+
 import { ThemeProvider } from "../lib/theme";
 import { registerServiceWorker } from "../lib/pwa-register";
+import { Toaster } from "../components/ui/sonner";
 
 // Inline script: apply persisted theme before paint to avoid a light flash on dark users.
 const themeInitScript = `(function(){try{var m=localStorage.getItem('brick_theme')||'system';var d=m==='dark'||(m==='system'&&window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches);var r=document.documentElement;if(d){r.classList.add('dark');r.style.colorScheme='dark';r.style.backgroundColor='#241B14';}else{r.style.colorScheme='light';r.style.backgroundColor='#F2EAD9';}}catch(e){}})();`;
@@ -42,9 +43,6 @@ function NotFoundComponent() {
 function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
   console.error(error);
   const router = useRouter();
-  useEffect(() => {
-    reportLovableError(error, { boundary: "tanstack_root_error_component" });
-  }, [error]);
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-background px-4">
@@ -114,16 +112,6 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
         content:
           "Brick is your personal study mentor. It decides what to study and how long, so you only have to show up.",
       },
-      {
-        property: "og:image",
-        content:
-          "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/4555d811-00cf-47de-96e1-67365b4305dd/id-preview-ea41e427--4c2ee55b-a367-4692-8969-ae3e3e635a34.lovable.app-1781470406522.png",
-      },
-      {
-        name: "twitter:image",
-        content:
-          "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/4555d811-00cf-47de-96e1-67365b4305dd/id-preview-ea41e427--4c2ee55b-a367-4692-8969-ae3e3e635a34.lovable.app-1781470406522.png",
-      },
     ],
     links: [
       { rel: "manifest", href: "/manifest.webmanifest" },
@@ -176,6 +164,7 @@ function RootComponent() {
       <ThemeProvider>
         {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
         <Outlet />
+        <Toaster />
       </ThemeProvider>
     </QueryClientProvider>
   );

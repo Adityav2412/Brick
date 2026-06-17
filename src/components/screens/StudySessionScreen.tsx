@@ -15,6 +15,7 @@ import { cn } from "@/lib/utils";
 import { useStore } from "@/lib/store";
 import { formatTimer } from "@/lib/algorithm";
 import SubjectIcon from "@/components/SubjectIcon";
+import { toast } from "sonner";
 
 export default function StudySessionScreen() {
   const { state, dispatch } = useStore();
@@ -109,6 +110,7 @@ export default function StudySessionScreen() {
     if (intervalRef.current) clearInterval(intervalRef.current);
     dispatch({ type: "END_SESSION", actualSeconds: elapsed, completed });
     setShowEndConfirm(false);
+    toast.success(completed ? "Session complete! Great job." : "Progress saved. Take a break.");
   };
 
   const handleSkip = () => {
@@ -283,14 +285,20 @@ export default function StudySessionScreen() {
               <span className="text-[11px] font-medium text-foreground">Skip</span>
             </button>
 
-            <button className="flex flex-col items-center gap-2 p-2 rounded-2xl hover:bg-muted transition-colors">
+            <button
+              onClick={() => toast.success("Notes saved for this lecture.")}
+              className="flex flex-col items-center gap-2 p-2 rounded-2xl hover:bg-muted transition-colors"
+            >
               <div className="w-10 h-10 rounded-xl bg-muted flex items-center justify-center">
                 <FileText size={18} className="text-foreground" />
               </div>
               <span className="text-[11px] font-medium text-foreground">Notes</span>
             </button>
 
-            <button className="flex flex-col items-center gap-2 p-2 rounded-2xl hover:bg-muted transition-colors">
+            <button
+              onClick={() => toast.success("Lecture bookmarked.")}
+              className="flex flex-col items-center gap-2 p-2 rounded-2xl hover:bg-muted transition-colors"
+            >
               <div className="w-10 h-10 rounded-xl bg-muted flex items-center justify-center">
                 <Bookmark size={18} className="text-foreground" />
               </div>

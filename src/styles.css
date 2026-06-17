@@ -2,6 +2,20 @@
 @source "../src";
 @import "tw-animate-css";
 
+/* Completely hide injected Lovable UI elements */
+#lovable-badge,
+[class*="lovable-badge"],
+[class*="lovable-tagger"],
+[id*="lovable-tagger"],
+iframe[src*="lovable.dev"] {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
+
+@tailwind base;
+
 @custom-variant dark (&:is(.dark *));
 
 /*

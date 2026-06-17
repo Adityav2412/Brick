@@ -1,6 +1,6 @@
-'use client'
+"use client";
 
-import { cn } from '@/lib/utils'
+import { cn } from "@/lib/utils";
 
 /**
  * Companion — Brick's calm, mature mentor figure.
@@ -13,24 +13,19 @@ export default function CompanionAvatar({
   size = 40,
   className,
 }: {
-  size?: number
-  className?: string
+  size?: number;
+  className?: string;
 }) {
   return (
     <div
       className={cn(
-        'shrink-0 rounded-full bg-primary flex items-center justify-center overflow-hidden',
+        "shrink-0 rounded-full bg-primary flex items-center justify-center overflow-hidden",
         className,
       )}
       style={{ width: size, height: size }}
       aria-label="Your Brick mentor"
     >
-      <svg
-        viewBox="0 0 40 40"
-        width={size}
-        height={size}
-        aria-hidden="true"
-      >
+      <svg viewBox="0 0 40 40" width={size} height={size} aria-hidden="true">
         {/* Soft inner glow */}
         <defs>
           <radialGradient id="brick-companion-glow" cx="50%" cy="35%" r="65%">
@@ -51,5 +46,5 @@ export default function CompanionAvatar({
         <ellipse cx="17.5" cy="14" rx="1.8" ry="1.1" className="fill-primary-foreground/60" />
       </svg>
     </div>
-  )
+  );
 }
